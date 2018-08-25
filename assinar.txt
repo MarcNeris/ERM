@@ -1,0 +1,14 @@
+D:
+cordova build --release android
+
+CD PhoneGap\HCM\platforms\android\app\build\outputs\apk\release
+
+d:\PhoneGap\HCM\platforms\android\app\build\outputs\apk\release
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore overt.keystore app-release-unsigned.apk overt
+
+Angra@@2
+
+zipalign -v 4 app-release-unsigned.apk overt-HCM.apk
+
+zipalign -v 4 app-release-unsigned.apk overt-BAM.apk

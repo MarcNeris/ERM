@@ -1,0 +1,71 @@
+{
+  "_from": "cordova-plugin-device-settings@0.0.7",
+  "_id": "cordova-plugin-device-settings@0.0.7",
+  "_inBundle": false,
+  "_integrity": "sha512-cXCveT6Ar8dA8eOigPeBkn8vB8sKz5RysQ9uOwzUrUfA2+B79TgEGM5trv1qeSYSMLhKfCbm5t/7tCPXEJPzrw==",
+  "_location": "/cordova-plugin-device-settings",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "cordova-plugin-device-settings@0.0.7",
+    "name": "cordova-plugin-device-settings",
+    "escapedName": "cordova-plugin-device-settings",
+    "rawSpec": "0.0.7",
+    "saveSpec": null,
+    "fetchSpec": "0.0.7"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-device-settings/-/cordova-plugin-device-settings-0.0.7.tgz",
+  "_shasum": "8cbb7725cc7351a6fdb2aae0bcdfa0284aa1ac51",
+  "_spec": "cordova-plugin-device-settings@0.0.7",
+  "_where": "D:\\PhoneGap\\newHCM",
+  "author": {
+    "name": "Peek Vision Ltd"
+  },
+  "bugs": {
+    "url": "https://github.com/PeekVision/cordova-plugin-device-settings/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-device-settings",
+    "platforms": [
+      "android"
+    ]
+  },
+  "deprecated": "this version has been deprecated",
+  "description": "Cordova Device Settings Plugin",
+  "devDependencies": {
+    "jshint": "^2.6.0"
+  },
+  "engines": {
+    "cordovaDependencies": {
+      "2.0.0": {
+        "cordova": ">100"
+      }
+    }
+  },
+  "homepage": "https://github.com/PeekVision/cordova-plugin-device-settings#readme",
+  "keywords": [
+    "cordova",
+    "device",
+    "settings",
+    "security",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "license": "Apache-2.0",
+  "name": "cordova-plugin-device-settings",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PeekVision/cordova-plugin-device-settings.git"
+  },
+  "scripts": {
+    "jshint": "node node_modules/jshint/bin/jshint www && node node_modules/jshint/bin/jshint src && node node_modules/jshint/bin/jshint tests",
+    "test": "npm run jshint"
+  },
+  "types": "./types/index.d.ts",
+  "version": "0.0.7"
+}
