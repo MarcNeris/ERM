@@ -59,7 +59,7 @@ function mostraSolicitoesEmAberto(YYYYMMDD) {
                                 '<div class="row">'+
                                     '<div class="col-lg-12">'+
                                         '<div class="col-md-12"><br><h5><span>${DesIte}</span></h5></div>'+
-                                        '<div class="col-md-12"><h6> Solicitação: <span class="text-danger">${NumSol}</span></h6> <h6> Quantidade: <span class="text-danger">${QtdSol}</span></h6> <h6> Valor Unitário: <span class="text-danger">${PreUni}</span></h6><h6>Valor Total Estimado: <span class="text-danger">${VlrApr}</span></h6><hr></div>'+
+                                        '<div class="col-md-12"><h6> Solicitação: <span class="text-danger">${NumSol} - ${SeqSol}</span></h6> <h6> Quantidade: <span class="text-danger">${QtdSol}</span></h6> <h6> Valor Unitário: <span class="text-danger">${PreUni}</span></h6><h6>Valor Total Estimado: <span class="text-danger">${VlrApr}</span></h6><hr></div>'+
                                         '<div class="col-md-12"><h6>${NomEmp}</h6><h6>${NomFil}</h6><hr></div>'+
                                         
                                         '<div class="col-md-12"><h6>Centro de Custo:<span class="text-danger"> ${AbrCcu}</span></h6></div>'+
@@ -73,7 +73,7 @@ function mostraSolicitoesEmAberto(YYYYMMDD) {
                                             '</div>'+
 
                                             '<div id="btnAprovar${CodEmp}${CodFil}${NumSol}${SeqSol}" class="col-md-6">'+
-                                                '<button onclick="aprovarSolicitacaoCompra(\'${ChvInt}\',\'${SeqInt}\',\'${CodEmp}\',\'${CodFil}\',\'${NumSol}\',\'${SeqSol}\',\'${DatGer}\')" class="btn btn-fill btn-success btnRigth">Aprovar</button>'+
+                                                '<button onclick="aprovarSolicitacaoCompra(\'${ChvInt}\',\'${SeqInt}\',\'${CodPrp}\',\'${CodEmp}\',\'${CodFil}\',\'${NumSol}\',\'${SeqSol}\',\'${DatGer}\')" class="btn btn-fill btn-success btnRigth">Aprovar</button>'+
                                             '</div>'+
                                         '</div>'+
                                     '</div>'+
@@ -106,14 +106,18 @@ function mostraSolicitoesEmAberto(YYYYMMDD) {
                 value.btnClass = 'btn-info';
                 
                 $.tmpl(REPStatus, value).appendTo("#liApprove");
-                
-                FB.ref('solapr/CodEmp-'+value.CodEmp+'/CodFil-'+value.CodFil+'/NumSol-'+value.NumSol+'/SeqSol-'+value.SeqSol).on('value', function(solapr){
+
+                FB.ref('solapr/CodPrp-'+value.CodPrp+'-'+value.CodEmp+'/CodFil-'+value.CodFil+'/NumSol-'+value.NumSol+'/SeqSol-'+value.SeqSol).on('value', function(solapr){
                 
                     var solapr =  solapr.val();
 
                     if(solapr){
 
-                        FB.ref('solapr/SitErp/'+solapr.DatApr+'/'+value.CodEmp+'-'+value.CodFil+'-'+value.NumSol+'-'+value.SeqSol).set(solapr);
+                        var DatAprRef = moment(solapr.DatApr, 'DD/MM/YYYY').format('YYYY-MM-DD');
+
+                        //emailRef
+
+                        //FB.ref('solapr/SitErp/'+DatAprRef+'/'+value.CodEmp+'-'+value.CodFil+'-'+value.NumSol+'-'+value.SeqSol).set(solapr);
     
                         FB.ref('solapr/SitApr/'+YYYYMMDD+'/DatApr').set(YYYYMMDD);
 
@@ -154,11 +158,12 @@ function alertNavigator(){
 };
 
 
-function aprovarSolicitacaoCompra(ChvInt, SeqInt, CodEmp, CodFil, NumSol, SeqSol, DatGer){
+function aprovarSolicitacaoCompra(ChvInt, SeqInt, CodPrp, CodEmp, CodFil, NumSol, SeqSol, DatGer){
 
-    window.devicesettings.getAutoTimeMode(function(isAutoTimeMode){
+    //window.devicesettings.getAutoTimeMode(function(isAutoTimeMode){
         
-        if(isAutoTimeMode==0){
+        //if(isAutoTimeMode==0){
+        if(0!=0){
 
             navigator.vibrate([100]);
 
@@ -172,16 +177,26 @@ function aprovarSolicitacaoCompra(ChvInt, SeqInt, CodEmp, CodFil, NumSol, SeqSol
             
         } else{
 
-            navigator.vibrate([50]);
+            //navigator.vibrate([50]);
                         
-            const refSolApr = FB.ref('solapr/CodEmp-'+CodEmp+'/CodFil-'+CodFil+'/NumSol-'+NumSol+'/SeqSol-'+SeqSol);
+            const refSolApr = FB.ref('solapr/CodPrp-'+CodPrp+'-'+CodEmp+'/CodFil-'+CodFil+'/NumSol-'+NumSol+'/SeqSol-'+SeqSol);
             
-            var DatApr = moment().format('YYYY-MM-DD');
+            var DatApr = moment().format('DD/MM/YYYY');
+
+            if(moment().format('HH.mm')=='00.00'){
+                
+                var HorApr='1';
+
+            } else{
+
+                var HorApr = ((parseFloat(moment().format('HH.mm'))) * 60).toString();
+            }
 
             var solapr = {
 
                 ChvInt : ChvInt,
                 SeqInt : SeqInt,
+                CodPrp : CodPrp,
                 CodEmp : CodEmp,
                 CodFil : CodFil,
                 NumSol : NumSol,
@@ -190,16 +205,20 @@ function aprovarSolicitacaoCompra(ChvInt, SeqInt, CodEmp, CodFil, NumSol, SeqSol
                 DatApr : DatApr,
                 DatGer : DatGer,
                 DatHor : moment().format('DD/MM/YYYY HH:mm:ss'),
-                HorApr : ((parseFloat(moment().format('HH.mm'))) * 60).toString()
+                HorApr : HorApr
 
             }
 
-            refSolApr.set(solapr);
+            var DatAprRef = moment().format('YYYY-MM-DD');
 
-            FB.ref('solapr/SitErp/'+DatApr+'/'+value.CodEmp+'-'+value.CodFil+'-'+value.NumSol+'-'+value.SeqSol).set(solapr);
+            refSolApr.set(solapr).then(SiErp => {
+
+                FB.ref('solapr/SitErp/'+DatAprRef+'/'+CodPrp+'-'+CodEmp+'-'+CodFil+'-'+NumSol+'-'+SeqSol+'-'+ChvInt).set(solapr);
+
+            });
         }
 
-    }, null);
+    //}, null);
 };
 
 
