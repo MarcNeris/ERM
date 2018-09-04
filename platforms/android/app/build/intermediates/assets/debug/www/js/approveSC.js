@@ -87,6 +87,8 @@ function mostraSolicitoesEmAberto(YYYYMMDD) {
             
             $.each(data, function(k, value ) {
 
+                localStorage.CodPrp=value.CodPrp;
+
                 $('#TipApv').html(value.TipApv);
                 
                 $('#TipApv').removeClass('hide');
@@ -132,7 +134,7 @@ function mostraSolicitoesEmAberto(YYYYMMDD) {
                             $('#'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).addClass('btn-warning');
                             $('#btnAprovar'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).empty();
                         }
-                        
+
                         if(solapr.SitSol=='P'){
                             $('#'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).removeClass('btn-warning');
                             $('#'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).removeClass('btn-info');

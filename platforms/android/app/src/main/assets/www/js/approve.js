@@ -37,23 +37,54 @@ refApprove.on('value', function(solpenapr){
     if(solpenapr){
 
         solpenapr.forEach(SeqInt => {
-        
+            
             SeqInt.forEach(item => {
                 
                 item.forEach(data => {
-
+                    
                     var data = data.val();
+                    
+                    localStorage.CodPrp=data.CodPrp;
 
                     var DatRef = moment(data.DatGer, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD');
 
-                    FB.ref('ermapr/'+emailRef+'/solpenapr').set({DatGer:DatRef});
-
+                    FB.ref('ermapr/'+emailRef+'/SolPenApr').set(DatRef);
+                    //FB.ref('ermapr/'+emailRef+'/CotPenApr').set(DatRef);
                 }); 
             }); 
         });
     }
 });
 
+//////////////////////////////////////////////////////////
+/// Aprovações Pendentes
+//////////////////////////////////////////////////////////
+const refErmApr = FB.ref('ermapr').child(emailRef);
+
+var liPenApr ='<button  onclick="SolicitacaoCompra(\'${DatApv}\')" class="btn btn-lg btn-info btn-fill btn-block">${TipApv}</button>';
+
+refErmApr.on('value', function(ErmApr){
+   
+    $("#liPenApr").empty();
+
+    ErmApr.forEach(item => {
+        item.TipApv = item.key;
+        item.DatApv = item.val();
+
+        if(item.TipApv=='SolPenApr'){
+            item.TipApv='Solicitações de Compra';
+        }
+
+        $.tmpl(liPenApr, item).appendTo("#liPenApr");
+
+    });
+});
+
+SolicitacaoCompra = function(DatApv){
+
+    window.location.assign('approveSC.html');
+
+}
 
 
 

@@ -1,4 +1,4 @@
-#Tue Sep 04 14:21:35 BRT 2018
+#Tue Sep 04 18:09:56 BRT 2018
 base.0=D\:\\Mobile\\ERM\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
 renamed.0=classes.dex
 file.0=D\:\\Mobile\\ERM\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0\\classes.dex
