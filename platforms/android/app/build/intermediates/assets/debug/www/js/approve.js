@@ -3,6 +3,8 @@ String.prototype.trunc = String.prototype.trunc ||
     return (this.length > n) ? this.substr(0, n-1) + '&hellip;' : this;
 };
 
+
+
 firebase.auth().onAuthStateChanged(function(user) {
 
     if(user){
@@ -25,6 +27,41 @@ firebase.auth().onAuthStateChanged(function(user) {
         );
     }
 });
+
+const emailRef = localStorage.email.split('.').join("-");
+
+const refApprove = FB.ref('solpenapr').child(emailRef);
+
+refApprove.on('value', function(solpenapr){
+
+    if(solpenapr){
+
+        solpenapr.forEach(SeqInt => {
+        
+            SeqInt.forEach(item => {
+                
+                item.forEach(data => {
+
+                    var data = data.val();
+
+                    var DatRef = moment(data.DatGer, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD');
+
+                    FB.ref('ermapr/'+emailRef+'/solpenapr').set({DatGer:DatRef});
+
+                }); 
+            }); 
+        });
+    }
+});
+
+
+
+
+
+
+
+
+
 
 
 
@@ -104,10 +141,8 @@ function mostraSolicitoesEmAberto(YYYYMMDD) {
                 value.btnClass = 'btn-info';
                 
                 $.tmpl(REPStatus, value).appendTo("#liApprove");
-                
-                var DatGerRef = moment(value.DatGer,'DD/MM/YYYY HH:mm').format('YYYYMMDDHHmm');
 
-                FB.ref('solapr/CodPrp-'+value.CodPrp+'-'+DatGerRef+'-'+value.CodEmp+'/CodFil-'+value.CodFil+'/NumSol-'+value.NumSol+'/SeqSol-'+value.SeqSol).on('value', function(solapr){
+                FB.ref('solapr/CodPrp-'+value.CodPrp+'-'+value.CodEmp+'/CodFil-'+value.CodFil+'/NumSol-'+value.NumSol+'/SeqSol-'+value.SeqSol).on('value', function(solapr){
                 
                     var solapr =  solapr.val();
 
@@ -125,21 +160,9 @@ function mostraSolicitoesEmAberto(YYYYMMDD) {
 
                         $('.aprovador'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).html(' '+solapr.UsuEml);
 
-                       
-                        if(value.DatGer==solapr.DatGer){
-
-                            $('#'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).removeClass('btn-info');
-                            $('#'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).addClass('btn-warning');
-                            $('#btnAprovar'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).empty();
-                        }
+                        $('#'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).addClass('btn-warning');
                         
-                        if(solapr.SitSol=='P'){
-                            $('#'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).removeClass('btn-warning');
-                            $('#'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).removeClass('btn-info');
-                            $('#'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).addClass('btn-success');
-
-                        }
-
+                        $('#btnAprovar'+solapr.CodEmp+solapr.CodFil+solapr.NumSol+solapr.SeqSol).empty();
                         
                     } else{
                         
@@ -154,7 +177,7 @@ function mostraSolicitoesEmAberto(YYYYMMDD) {
     });
 };
 
-mostraSolicitoesEmAberto(moment().format('YYYY-MM-DD'));
+//mostraSolicitoesEmAberto(moment().format('YYYY-MM-DD'));
 
 $('#btnSolicitacaoDeCompra').on('change', function(){
 
@@ -190,12 +213,8 @@ function aprovarSolicitacaoCompra(ChvInt, SeqInt, CodPrp, CodEmp, CodFil, NumSol
         } else{
 
             //navigator.vibrate([50]);
-
-            //console.log();
-
-            var DatGerRef = moment(DatGer,'DD/MM/YYYY HH:mm').format('YYYYMMDDHHmm');
                         
-            const refSolApr = FB.ref('solapr/CodPrp-'+CodPrp+'-'+DatGerRef+'-'+CodEmp+'/CodFil-'+CodFil+'/NumSol-'+NumSol+'/SeqSol-'+SeqSol);
+            const refSolApr = FB.ref('solapr/CodPrp-'+CodPrp+'-'+CodEmp+'/CodFil-'+CodFil+'/NumSol-'+NumSol+'/SeqSol-'+SeqSol);
             
             var DatApr = moment().format('DD/MM/YYYY');
 
